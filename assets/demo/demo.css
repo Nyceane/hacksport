@@ -12,7 +12,7 @@
 
 .tim-typo .tim-note {
   top: 5px;
-  color: #c0c1c2;
+  color: #000;
   display: block;
   font-weight: 400;
   font-size: 18px;
@@ -21,6 +21,10 @@
   margin-left: 20px;
   position: absolute;
   width: 260px;
+}
+
+.tim-typo .tim-note, label{
+  color: #000;
 }
 
 /* offline-doc */
