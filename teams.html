@@ -17,7 +17,135 @@
   <link href="./assets/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="./assets/demo/demo.css" rel="stylesheet" />
+
+  <script src="assets/js/nebPay.js"></script>
+  <script src="assets/js/nebulas.js"></script>
 </head>
+
+<script>
+  var NebPay = require("nebpay");
+  var nebPay = new NebPay();
+
+  var Neb = require("nebulas").Neb;
+  var neb = new Neb();
+  //neb.setRequest(new HttpRequest("https://testnet.nebulas.io"));
+
+  var to = "n1otzGZ87uv9NriHL5hW4Rka5SfkD7Edhxr";  // prediction market  
+
+  //to check if the extension is installed
+  //if the extension is installed, var "webExtensionWallet" will be injected in to web page
+  if(typeof(webExtensionWallet) === "undefined"){
+      alert ("Extension wallet is not installed, please install it first.")
+  }
+
+  //send transaction to another address
+  function onClickSendTx() {
+      var amount = document.getElementById("inputAmount").value;
+      nebPay.pay(to, amount, {
+          qrcode: {
+              showQRCode: true
+          },
+          goods: {
+              name: "test",
+              desc: "test goods"
+          },
+          //callback: cbSendTx
+          listener: cbSendTx
+      });
+  }
+  //callback function of onClickSendTx, to handle the transaction response
+  function cbSendTx(resp){
+      console.log("callback resp: " + JSON.stringify(resp))
+      document.getElementById("txResult").innerHTML = "send transaction result:\n" +  JSON.stringify(resp)
+  }
+
+  function onClickBet(outcome) {
+      //var value = document.getElementById("inputAmount2").value;
+      var value = "0.000001";
+      var callFunction = "bet";
+      //var callArgs = document.getElementById("inputParameter").value.trim(); //in the form of ["args"]
+      var callArgs = "[" + outcome + "]";
+      nebPay.call(to, value, callFunction, callArgs, {
+          qrcode: {
+              showQRCode: true
+          },
+          goods: {
+              name: "test",
+              desc: "test goods"
+          },
+          //callback: cbCallDapp
+          listener: onClickBetCallback
+      });
+  }
+
+  function receiptTransaction(txhash) {
+      // neb.api.getTransactionReceipt(txhash, function (err, resp) {
+      //     console.log(resp);
+      //     document.getElementById('receipt').value = JSON.stringify(resp);
+      //     //window.location.href = "./waiting.html";
+      // });
+  }
+
+  function onClickBetCallback(resp) {
+    console.log("onClickBetCallback", resp);
+
+    var txhash = resp.txhash;
+
+    function waitForSuccess() {
+      receiptTransaction(txhash);
+      
+    }
+
+    setInterval(waitForSuccess, 2000);
+
+  }
+
+  
+
+  function onClickCallDapp() {
+      var value = document.getElementById("inputAmount2").value;
+      var callFunction = document.getElementById("inputFunction").value;
+      var callArgs = document.getElementById("inputParameter").value.trim(); //in the form of ["args"]
+      nebPay.call(to, value, callFunction, callArgs, {
+          qrcode: {
+              showQRCode: true
+          },
+          goods: {
+              name: "test",
+              desc: "test goods"
+          },
+          //callback: cbCallDapp
+          listener: cbCallDapp
+      });
+  }
+
+  function cbCallDapp(resp){
+      console.log("callback resp: " + JSON.stringify(resp))
+      document.getElementById("callResult").innerHTML = "call Dapp result:\n" +  JSON.stringify(resp)
+  }
+
+  function onClickSimulateCall() {
+      var value = document.getElementById("inputAmount2").value;
+      var callFunction = document.getElementById("inputFunction").value;
+      var callArgs = document.getElementById("inputParameter").value.trim(); //in the form of ["args"]
+      nebPay.simulateCall(to, value, callFunction, callArgs, {
+          qrcode: {
+              showQRCode: true
+          },
+          goods: {
+              name: "test",
+              desc: "test goods"
+          },
+          listener: cbSimulateCall
+      });
+  }
+
+  function cbSimulateCall(resp){
+      console.log("callback resp: " + JSON.stringify(resp))
+      document.getElementById("simulateCallResult").innerHTML = "simulate call result:\n" +  JSON.stringify(resp)
+  }
+
+</script>
 
 <body class="">
   <div class="wrapper ">
@@ -168,7 +296,7 @@
                         </tr>
                         <tr>
                           <td>
-                            <a href="./waiting.html" class="btn btn-primary btn-round">Bet</a>
+                            <a class="btn btn-primary btn-round" onclick="onClickBet(3)">Bet</a>
                           </td>
                           <td>
                             3
