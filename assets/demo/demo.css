@@ -5,6 +5,11 @@
   width: 100%;
 }
 
+.material-icons.md-48 { 
+  font-size: 48px; 
+  color: rgba(34, 139, 34, 0.99);
+}
+
 .tim-typo .tim-note {
   top: 5px;
   color: #c0c1c2;
