@@ -78,6 +78,25 @@
       });
   }
 
+  function submitOracleOutcome(outcome) {
+      //var value = document.getElementById("inputAmount2").value;
+      var value = "0";
+      var callFunction = "oracle";
+      //var callArgs = document.getElementById("inputParameter").value.trim(); //in the form of ["args"]
+      var callArgs = "[" + outcome + "]";
+      nebPay.call(to, value, callFunction, callArgs, {
+          qrcode: {
+              showQRCode: true
+          },
+          goods: {
+              name: "test",
+              desc: "test goods"
+          },
+          //callback: cbCallDapp
+          listener: onClickBetCallback
+      });
+  }
+
   function receiptTransaction(txhash) {
       // neb.api.getTransactionReceipt(txhash, function (err, resp) {
       //     console.log(resp);
@@ -296,7 +315,7 @@
                         </tr>
                         <tr>
                           <td>
-                            <a style="color: white;" class="btn btn-primary btn-round" onclick="onClickBet(3)">Select</a>
+                            <a style="color: white;" class="btn btn-primary btn-round" onclick="submitOracleOutcome(3)">Select</a>
                           </td>
                           <td>
                             3
