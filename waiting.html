@@ -54,7 +54,7 @@
           </h1>
           <h3 class="description">DoraHacks - Blockchain for Future Hackathon</h3>
           <br/>
-          <a href="./winning.html" class="btn btn-primary btn-round btn-lg">View Winners</a>
+          <a id="button" style="display:none"; href="./winning.html" class="btn btn-primary btn-round btn-lg">View Winners</a>
         </div>
       </div>
     </div>
@@ -109,6 +109,17 @@
   <script src="./assets/js/material-dashboard.min.js?v=2.1.0" type="text/javascript"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="./assets/demo/demo.js"></script>
+    <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+              setInterval(test, 10000);
+
+              function test()
+              {
+                $("#button").show();
+              }
+    });
+  </script>
 </body>
 
 </html>
